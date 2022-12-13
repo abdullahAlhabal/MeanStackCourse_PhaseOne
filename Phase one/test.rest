@@ -1,0 +1,15 @@
+# localhost :: 127.0.0.1 
+GET    http://127.0.0.1:1234/  
+Content-Type: application/json
+
+{
+
+} 
+
+#POST   http://localhost:1234 
+
+## 
+
+#DELETE http://localhost:1234
+
+## 
