@@ -5,16 +5,18 @@
 
 */
 // load the module 
-const express  = require('express');
-const joi      = require('joi');
-const { User } = require('../models/user'); 
-const winston  = require('winston');
-const bcrypt   = require('bcrypt');
-const router   = express.Router();  
 
+const joi       = require('joi');
+const { User }  = require('../models/user'); 
+const winston   = require('winston');
+const bcrypt    = require('bcrypt');
+const express   = require('express');
+const router    = express.Router();
+
+ 
 // use async function cuze we use find()
 // this http request don't need any type of permissions - any visitor would be a user 
-router.get('/' ,async (req,res)=>{
+router.post('/' ,async (req,res)=>{
 
     // check  unvalidated requests  
     const { error } = validate(req.body);
@@ -49,5 +51,7 @@ function validate( request){
     return schema.validate(request);
 
 }
+
+   
 
 module.exports = router ;

@@ -5,7 +5,7 @@
 const express                    = require('express');
 const { Categorie , validation } = require('../models/categorie');
 const admin                      = require('../middleware/admin');
-const {authUser}                   = require('../middleware//User');
+const {authUser}                  = require('../middleware//User');
 const auth                       = require('../middleware/auth');
 const router                     = express.Router();
 
@@ -19,13 +19,13 @@ router.get('/' , async (req,res) =>{
 router.get('/:categoryId' , async (req,res) =>{  
     const category = await Categorie.findById(req.params.categoryId);  
     if(!category) {
-        return res.status(404).send(`category with id ["${req.params.categoryId}"] not found \n`);
+        return res.status(404).send(`category with id [" ${req.params.categoryId} "] not found \n`);
     }
 
-    res.send(categorie)
+    res.send(category)
 });
 
-router.post('/' , admin  , async (req,res) =>{   
+router.post('/'  , async (req,res) =>{   
 
     const {error} = validation(req.body);
     if(error){
@@ -40,7 +40,7 @@ router.post('/' , admin  , async (req,res) =>{
     res.send(category);
 });
  
-router.put('/:categoryId' , authUser,admin , async (req,res) =>{  
+router.put('/:categoryId' ,  async (req,res) =>{  
 
     const {error} = validation(req.body);
     if(error){
@@ -63,12 +63,14 @@ router.put('/:categoryId' , authUser,admin , async (req,res) =>{
 
 });
 
-router.delete('/:categoryId' ,  authUser, admin ,async (req,res) =>{   
+router.delete('/:categoryId' ,async (req,res) =>{   
     const category = await Categorie.findByIdAndRemove(req.params.categoryId);
     if(!category){
         return res.status(404).send(`category with id ["${req.params.categoryId}"] not found \n`);
     }
     res.send(category);
 });
+
+    
 
 module.exports = router;

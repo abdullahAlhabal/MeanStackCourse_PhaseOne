@@ -1,9 +1,11 @@
 // load the modules 
 const mongoose = require('mongoose');
+const config   = require('../config/default');
 const joi      = require('joi');
 const jwt      = require('jsonwebtoken')
+mongoose.set('strictQuery', true);
 
-const userSchema = new monoose.schema({
+const userSchema = new mongoose.Schema({
     name :{
         type      : String,
         required  : true, 
@@ -30,7 +32,7 @@ const userSchema = new monoose.schema({
 // add the email and the password to the schema in order to do :  registering and authenticating users.
 
 userSchema.methods.generateAuthToken = function () {
-    return jwt.sign( { _id : this._id , isAdmin : this.isAdmin } , config.get('jwtPrivateKey')  )
+    return jwt.sign( { _id : this._id , isAdmin : this.isAdmin } , config.jwtPrivateKey  )
 }
 
 // how we can git the private key of jwt 

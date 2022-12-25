@@ -1,3 +1,4 @@
-{
-    "name" : "My Node App"
+module.exports = {
+
+    jwtPrivateKey : "secret" 
 }

@@ -2,11 +2,13 @@
  *  Admins can CRUD products and each product has a category, name, description (optional), price and the availability in stock.
  * load the modules
  */ 
+require('joi-objectid');
 const mongoose = require('mongoose');
 const joi      = require('joi');
+const { Categorie } = require("./categorie");
+// embeddings , link the categories with thea categorie property in prodcut
 
-// embeddings , link the categories with the categorie property in prodcut
-const categorieSchema = new mongoose.schema({
+const categorieSchema = new mongoose.Schema({
     name :{
         type      : String,
         required  : true, 
@@ -15,7 +17,7 @@ const categorieSchema = new mongoose.schema({
     }
 });
 
-const productSchema = new mongoose.schema({
+const productSchema = new mongoose.Schema({
     name :{
         type      : String,
         required  : true, 
@@ -23,7 +25,11 @@ const productSchema = new mongoose.schema({
         maxlength : 100
     },
     category :{
-        type : categorieSchema                              // relation
+        /*type: mongoose.Schema.Types.ObjectId,
+        ref : 'Categorie'*/
+        type : String,
+        required : true,
+        min : 0 , 
     },
     description : {
         type : String ,
@@ -38,32 +44,35 @@ const productSchema = new mongoose.schema({
         get      : v => Math.round(v),  
         set      : v => Math.round(v)  
     },
-    numberInStock : {
-        type        : Number,
-        required    : true,
-        min         : 0 , 
-        max         : 1000
-    },
     isAvailable : {
-        type :Boolean
+        type :Boolean ,
+        default : function() { return this.inStock > 0 },
+        
+    },
+    inStock : {
+        type        : Number,
+        required    : true, 
+        min         : 0 , 
+        max         : 100
     }
 })
 
 
-
 const Product = mongoose.model('Product' , productSchema);
 
-function productValidation(product){
+
+
+
+function productValidation(produc){
     const schema = joi.object({
         name          : joi.string().min(3).max(100).required(),
-        category      : joi.required(),
+        category      : joi.string().min(0).required(),
         description   : joi.string().min(25).max(1000),
         price         : joi.number().min(0).max(1000).required(),
-        numberInStock : joi.number().min(0).max(100).required(),
+        inStock       : joi.number().min(0).max(100).required()
     })
-    return schema.validate(product);
-
+    return schema.validate(produc);
 }
 
-module.exports.validation = productValidation ;
+module.exports.validation   = productValidation;
 module.exports.Product    = Product ;

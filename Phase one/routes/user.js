@@ -23,7 +23,7 @@ router.post('/' , async (req,res) => {
     }
 
     // check if the email is uniqur -- if not send message 
-    const user = await User.findOne({ email : req.body.email}) 
+    let  user = await User.findOne({ email : req.body.email}) 
     if(user){
         return res.status(404).send( ` email already exists`);
     }
@@ -40,6 +40,8 @@ router.post('/' , async (req,res) => {
     res.status(200).send( _.pick( user , [ "_id" , "name" , "email" ]));
 
 } )  ;
+    
+
 
 // exports the router 
 module.exports = router ;

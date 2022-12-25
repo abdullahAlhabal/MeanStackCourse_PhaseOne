@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const joi       = require('joi');
-
-const orderSchema = new mongoose.schema({
+mongoose.set('strictQuery', true);
+const orderSchema = new mongoose.Schema({
 
     user     :  new mongoose.Schema({
                     name :{
@@ -18,7 +18,7 @@ const orderSchema = new mongoose.schema({
     // list of products 
     products : {
         type : [
-            new mongoose.schema({
+            new mongoose.Schema({
                 name :{
                     type      : String,
                     required  : true, 

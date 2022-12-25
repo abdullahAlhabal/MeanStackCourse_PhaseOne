@@ -2,7 +2,8 @@
 const mongoose = require('mongoose');
 const joi      = require('joi');
 
-const categorieSchema = new monoose.schema({
+
+const categorieSchema = new mongoose.Schema({
     name :{
         type      : String,
         required  : true, 
@@ -21,5 +22,5 @@ function categorieValidation(categorie){
     return schema.validate(categorie);
 }
 
-module.exports.validation = categorieValidation ;
+module.exports.validation   = categorieValidation ;
 module.exports.Categorie    = Categorie ;

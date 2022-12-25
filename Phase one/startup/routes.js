@@ -1,7 +1,7 @@
 /* 
  ! this module is to require the routes modules and packages 
  load the module and packages 
- * npm i node nodemon express mongoose config morgan helmet winston joi joi-objectid
+ * npm i node nodemon express mongoose config morgan helmet winston joi joi-objectid express-async-errors jsonwebtoken path bcrypt
 **/
 
 /**
@@ -9,8 +9,10 @@
  */
 require(`express-async-errors`)
 const express     = require('express');
+const config      = require('config'); 
 const helmet      = require('helmet');
 const morgan      = require('morgan');
+const env         = require('dotenv');
 const winston     = require('winston');
 
 
@@ -19,7 +21,9 @@ const home        = require(`../routes/home`)
 const products    = require('../routes/products');
 const categories  = require('../routes/categories');
 const admin       = require('../routes/admin');
-const order       = require('../routes/order');
+const orders      = require('../routes/orders');
+const users       = require('../routes/user');
+const auth        = require('../routes/auth');
 const dashboard   = require('../routes/dashboard');
 
 /**
@@ -34,14 +38,16 @@ module.exports = function(app)  {
      */
     app.use(express.json());
     app.use(express.static('public'));
-    app.use(express.urlencoded({ extened : true })) ;
+    app.use(express.urlencoded({ extended : true })) ;
     app.use(helmet());
 
     // Routes 
+    app.use('/api/users'        , users      );
+    app.use('/api/auth'         , auth       );
     app.use('/api/products'     , products   );
     app.use('/api/categories'   , categories );
     app.use('/api/admin'        , admin      );    
-    app.use('/api/order'        , order      );
+    app.use('/api/order'        , orders     );
     app.use('/api/dashboard'    , dashboard  );
     app.use('/'                 , home       );
 
@@ -56,3 +62,4 @@ module.exports = function(app)  {
     
 
 };
+

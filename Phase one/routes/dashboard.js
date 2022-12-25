@@ -1,21 +1,17 @@
 // this page only admin and users can access to it  
-//* http://localhost:1234/dashboard/user              ==> for users
-//* http://localhost:1234/dashboard/user/admin        ==> for admins user 
+//* http://localhost:1234/dashboard/user              ==> access as users
+//* http://localhost:1234/dashboard/user/admin        ==> access as admins  
 
-const user    = require("../middleware/User");
+const {authUser}    = require("../middleware/User");
 const admin   = require("../middleware/admin");
 const winston = require('winston');
 const express = require('express');
 const router  = express.Router();
-
-router.get('/user' , user , (req,res) => {
+ 
+router.get('/dashboard' , authUser ,  (req,res) => {
     winston.info("Dashboard Page");
-    res.status(200).send("Dashboard Page \n hello user ");   
+    res.status(200).send("Dashboard Page \n  ");   
 })
-
-router.get('/user/admin' , admin , (req,res) => {
-    winston.info("Dashboard Page");
-    res.status(200).send("Admin Dashboard Page \n hello user ");   
-})
+ 
 
 module.exports = router;

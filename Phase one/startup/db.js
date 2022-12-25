@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const winston  = require('winston');
 
 module.exports = function () {
-    mongoose.connect("mongodb://127.0.0.1:27017/" , { useNewUrlParser : true , useUnifiedTopology : true  }  )
+    mongoose.connect("mongodb://127.0.0.1:27017/phase1" , { useNewUrlParser : true , useUnifiedTopology : true  }  )
     .then( () => winston.info(`Successfully Connected to Mongo DataBase `) )
 };
 

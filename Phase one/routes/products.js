@@ -3,11 +3,13 @@
  load the module and packages 
  * npm i express 
 **/
-const express = NodeRequire('express');
+const express                    = require('express');
 const { Product , validation }   = require('../models/product');
 const admin                      = require('../middleware/admin');
 const auth                       = require('../middleware/auth');
-const router = express.Router();
+const router                     = express.Router();
+try{
+    
 
 // Anonymous visitors and customers can only perform read operations on categories and products :: in order to do that , we don't pass any middleware to the get router in category and product routes
 router.get('/' , async (req,res) =>{
@@ -26,7 +28,8 @@ router.get('/:productId' , async (req,res) =>{
     res.send(product)
 });
 
-router.post('/' , [admin]  , async (req,res) =>{   
+
+router.post('/'  , async (req,res) =>{   
 
     const {error} = validation(req.body);
     if(error){
@@ -34,14 +37,20 @@ router.post('/' , [admin]  , async (req,res) =>{
     }
     
     let product = new Product({
-        name : req.body.name 
+        name     : req.body.name     , 
+        inStock  : req.body.inStock  ,
+        category : req.body.category ,
+        price    : req.body.price 
     });
+
 
     product = await product.save();
     res.send(product);
 });
+
+
  
-router.put('/:productId' ,admin , async (req,res) =>{  
+router.put('/:productId' ,async (req,res) =>{  
 
     const {error} = validation(req.body);
     if(error){
@@ -64,7 +73,7 @@ router.put('/:productId' ,admin , async (req,res) =>{
 
 });
 
-router.delete('/:productId' , admin ,async (req,res) =>{   
+router.delete('/:productId'  ,async (req,res) =>{   
     const product = await Product.findByIdAndRemove(req.params.productId);
     if(!product){
         return res.status(404).send(`product with id ["${req.params.productId}"] not found \n`);
@@ -72,6 +81,10 @@ router.delete('/:productId' , admin ,async (req,res) =>{
     res.send(product);
 });
 
+
+}catch(err){
+    console.log(`Error : \n ${err.message}  \n product module \n`);
+}
 module.exports = router;
 
 
